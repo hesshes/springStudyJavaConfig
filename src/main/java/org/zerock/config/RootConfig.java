@@ -2,25 +2,25 @@ package org.zerock.config;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.Environment;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zaxxer.hikari.HikariJNDIFactory;
 
-import lombok.extern.log4j.Log4j;
 
 //applicationContext or bean factory 가 사용할 설정 정보라는 의미
 @Configuration // <beans> </beans>
 @PropertySource("classpath:/config/globals.properties")
 @ComponentScan(basePackages = { "org.zerock.sample" })
+@MapperScan(basePackages = {"org.zerock.mapper"})
 public class RootConfig {
 
 	@Autowired
@@ -39,6 +39,13 @@ public class RootConfig {
 		System.out.println(env.toString());
 		return dataSource;
 
+	}
+
+	@Bean
+	public SqlSessionFactory sqlSessionFactory() throws Exception {
+		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
+		sqlSessionFactory.setDataSource(dataSource());
+		return (SqlSessionFactory) sqlSessionFactory.getObject();
 	}
 
 }
