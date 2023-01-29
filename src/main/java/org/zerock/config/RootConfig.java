@@ -19,7 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
 //applicationContext or bean factory 가 사용할 설정 정보라는 의미
 @Configuration // <beans> </beans>
 @PropertySource("classpath:/config/globals.properties")
-@ComponentScan(basePackages = { "org.zerock.sample" })
+@ComponentScan(basePackages = { "org.zerock.sample", "org.zerock.service" })
 @MapperScan(basePackages = {"org.zerock.mapper"})
 public class RootConfig {
 
